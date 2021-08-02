@@ -188,8 +188,10 @@ void hexwave_perform64(t_hexwave *x, t_object *dsp64, double **ins, long numins,
     hexwave_change(&x->wave, x->reflect, x->peak_time, x->half_height, x->zero_wait);
     hexwave_generate_samples(samples, n, &x->wave, x->freq / x->samplerate);
     
+    double_t volscale = 1.0 - fabs(x->half_height / 4);
+    
     for(int i=0; i < n; i++) {
-        out[i] = samples[i];
+        out[i] = (double)samples[i] * volscale;
     }
     
 }
