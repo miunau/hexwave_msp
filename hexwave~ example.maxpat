@@ -59,7 +59,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 791.0, 432.0, 218.0, 27.0 ],
-					"text" : "FM AMOUNT",
+					"text" : "PM AMOUNT",
 					"textjustification" : 1
 				}
 
