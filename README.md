@@ -1,6 +1,6 @@
 # hexwave_msp
 
-MSP external wrapping [stb_hexwave.h](https://github.com/nothings/stb/blob/master/stb_hexwave.h).
+MSP external wrapping [stb_hexwave.h](https://github.com/nothings/stb/blob/master/stb_hexwave.h) by [Sean Barrett](http://nothings.org/).
 
 arguments:
 
@@ -12,4 +12,4 @@ arguments:
 6. size of BLEP (int, default 32)
 7. oversample (int, default 4)
 
-compiled by (@miuott)[https://twitter.com/miuott]
+compiled by [@miuott](https://twitter.com/miuott)
