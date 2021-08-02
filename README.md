@@ -2,6 +2,8 @@
 
 MSP external wrapping [stb_hexwave.h](https://github.com/nothings/stb/blob/master/stb_hexwave.h) by [Sean Barrett](http://nothings.org/).
 
+see the included maxpat for details.
+
 arguments:
 
 1. freq (float)
