@@ -65,7 +65,7 @@ void ext_main(void *r)
 void *hexwave_new(t_symbol *s, long argc, t_atom *argv)
 {
     
-    post("hexwave~ based on stb_hexwave.h by Sean Barrett (nothings.org). external v1.0 compiled by miunau (miunau.com).");
+    post("hexwave~ based on stb_hexwave.h by Sean Barrett (nothings.org). external v1.0.2 compiled by miunau (miunau.com)");
 	t_hexwave *x = (t_hexwave *)object_alloc(hexwave_class);
 
 	if (x) {
@@ -98,7 +98,7 @@ void hexwave_assist(t_hexwave *x, void *b, long m, long a, char *s)
 {
 	if (m == ASSIST_INLET) { //inlet
         if(a == 0) {
-            sprintf(s, "Frequency (Hz)");
+            sprintf(s, "Frequency (Hz) (float or signal)");
         }
         else if(a == 1) {
             sprintf(s, "Reflect (boolean, 0 or 1)");
@@ -112,6 +112,9 @@ void hexwave_assist(t_hexwave *x, void *b, long m, long a, char *s)
         else if(a == 4) {
             sprintf(s, "Zero wait (float, 0..1)");
         }
+        else if(a == 5) {
+            sprintf(s, "Phase modulation mode - distortion or FM (boolean, 0 or 1)");
+        }
 	}
 	else {	// outlet
 		sprintf(s, "Signal out");
@@ -122,7 +125,7 @@ void hexwave_assist(t_hexwave *x, void *b, long m, long a, char *s)
 void hexwave_float(t_hexwave *x, double f)
 {
     long in = proxy_getinlet((t_object *)x);
-    post("float: %f, in: %i", f, in);
+//    post("float: %f, in: %i", f, in);
 
     if (in == 0) {
         x->freq = f;
@@ -164,7 +167,6 @@ void hexwave_dsp64(t_hexwave *x, t_object *dsp64, short *count, double samplerat
 	// 5: flags to alter how the signal chain handles your object -- just pass 0
 	// 6: a generic pointer that you can use to pass any additional data to your perform method
 
-    post("count %i", count[0]);
     x->l_fcon = count[0];    // signal connected to the frequency inlet?
     x->samplerate = samplerate;
 	object_method(dsp64, gensym("dsp_add64"), x, hexwave_perform64, 0, NULL);
@@ -195,12 +197,16 @@ void hexwave_perform64(t_hexwave *x, t_object *dsp64, double **ins, long numins,
     hexwave_generate_samples(samples, n, &x->wave, x->freq / x->samplerate);
     
     for(int i=0; i < n; i++) {
+        
+        double out_smp = (double)samples[i] * volscale;
+        
         if(x->l_fcon) {
-            out[i] = (double)samples[i] * (1.0f - in[i]) * volscale;
+            out[i] = out_smp * in[i]; // phase modulation
         }
         else {
-            out[i] = (double)samples[i] * volscale;
+            out[i] = out_smp;
         }
+        
     }
     
 }
